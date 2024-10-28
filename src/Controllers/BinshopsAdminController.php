@@ -358,26 +358,16 @@ class BinshopsAdminController extends Controller
             ['lang_id', '=', $lang_id]
         ])->firstOrFail();
 
-        $path = public_path('/' . config("binshopsblog.blog_upload_dir"));
-        if (!$this->checked_blog_image_dir_is_writable) {
-            if (!is_writable($path)) {
-                throw new \RuntimeException("Image destination path is not writable ($path)");
-            }
+        if (Storage::disk(config('binshopsblog.blog_filesystem_disk'))->exists($post->image_large)) {
+            Storage::disk(config('binshopsblog.blog_filesystem_disk'))->delete($post->image_large);
         }
 
-        if (Storage::disk(config('binshopsblog.filesystem_driver'))->exists($post->image_large)) {
-            Storage::disk(config('binshopsblog.filesystem_driver'))->delete($post->image_large);
-            unlink($post->image_large);
+        if (Storage::disk(config('binshopsblog.blog_filesystem_disk'))->exists($post->image_medium)) {
+            Storage::disk(config('binshopsblog.blog_filesystem_disk'))->delete($post->image_medium);
         }
 
-        if (Storage::disk(config('binshopsblog.filesystem_driver'))->exists($post->image_medium)) {
-            Storage::disk(config('binshopsblog.filesystem_driver'))->delete($post->image_medium);
-            unlink($post->image_medium);
-        }
-
-        if (Storage::disk(config('binshopsblog.filesystem_driver'))->exists($post->image_thumbnail)) {
-            Storage::disk(config('binshopsblog.filesystem_driver'))->delete($post->image_thumbnail);
-            unlink($post->image_thumbnail);
+        if (Storage::disk(config('binshopsblog.blog_filesystem_disk'))->exists($post->image_thumbnail)) {
+            Storage::disk(config('binshopsblog.blog_filesystem_disk'))->delete($post->image_thumbnail);
         }
 
         $post->image_large = null;

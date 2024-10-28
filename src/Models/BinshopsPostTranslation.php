@@ -6,6 +6,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use BinshopsBlog\Laravel\Fulltext\Indexable;
 use Illuminate\Database\Eloquent\Model;
 use BinshopsBlog\Interfaces\SearchResultInterface;
+use Illuminate\Support\Facades\Storage;
 
 class BinshopsPostTranslation extends Model implements SearchResultInterface
 {
@@ -103,8 +104,10 @@ class BinshopsPostTranslation extends Model implements SearchResultInterface
     public function image_url($size = 'medium')
     {
         $this->check_valid_image_size($size);
+
         $filename = $this->{"image_" . $size};
-        return asset(config("binshopsblog.blog_upload_dir", "blog_images") . "/" . $filename);
+
+        return Storage::disk(config('binshopsblog.blog_filesystem_disk'))->url($filename);
     }
 
     /**

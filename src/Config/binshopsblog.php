@@ -21,8 +21,14 @@ return [
 
 
     'image_upload_enabled' => true, // true or false, if image uploading is allowed.
-    'blog_upload_dir' => "blog_images", // this should be in public_path() (i.e. /public/blog_images), and should be writable
 
+    /**
+     * The filesystem driver to be used when uploading images.
+     * See @link https://laravel.com/docs/8.x/filesystem#configuration
+     * for more information and available disks. Any third party libraries
+     * extending the Storage will also be available.
+     */
+    'blog_filesystem_disk' => env('BLOG_FILESYSTEM_DISK', 'local'),
 
     'memory_limit' => '2048M', // This is used when uploading images :
     //                              @ini_set('memory_limit', config("binshopsblog.memory_limit"));

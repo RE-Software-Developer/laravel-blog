@@ -37,8 +37,6 @@ trait UploadFileTrait
     /**
      * Get a filename (that doesn't exist) on the filesystem.
      *
-     * Todo: support multiple filesystem locations.
-     *
      * @param string $suggested_title
      * @param $image_size_details - either an array (with w/h attributes) or a string
      * @param UploadedFile $photo
@@ -60,7 +58,7 @@ trait UploadFileTrait
 
             $attempt = str_slug($base . $suffix . $wh) . $ext;
 
-            if (!File::exists($this->image_destination_path() . "/" . $attempt)) {
+            if (!Storage::disk(config('binshopsblog.blog_filesystem_disk'))->exists($attempt)) {
                 // filename doesn't exist, let's use it!
                 return $attempt;
             }
@@ -72,25 +70,16 @@ trait UploadFileTrait
 
     }
 
-    /**
-     * @return string
-     * @throws \RuntimeException
-     */
-    protected function image_destination_path()
-    {
-        return public_path('/' . config("binshopsblog.blog_upload_dir"));
-    }
-
 
     /**
-     * @param  BinshopsPostTranslation  $new_blog_post
+     * @param BinshopsPostTranslation|null  $new_blog_post
      * @param $suggestedTitle  - used to help generate the filename
      * @param $imageSizeDetails  - either an array (with 'w' and 'h') or a string (and it'll be uploaded at full size, no size reduction, but will use this string to generate the filename)
      * @param $photo
      * @return array
      * @throws Exception
      */
-    protected function UploadAndResize(BinshopsPostTranslation $new_blog_post, $suggestedTitle, $imageSizeDetails, $photo): array
+    protected function UploadAndResize(BinshopsPostTranslation $new_blog_post = null, $suggestedTitle, $imageSizeDetails, $photo): array
     {
         $imageFilename = $this->getImageFilename($suggestedTitle, $imageSizeDetails, $photo);
 
@@ -118,7 +107,7 @@ trait UploadFileTrait
             ->stream()
             ->__toString();
 
-        $path = Storage::disk(config('binshopsblog.filesystem_driver'))
+        $path = Storage::disk(config('binshopsblog.blog_filesystem_disk'))
             ->put(
                 $imageFilename,
                 $image,
@@ -164,22 +153,6 @@ trait UploadFileTrait
 
         // was not a string or array, so error
         throw new \RuntimeException("Invalid image_size_details: must be an array with w and h, or a string");
-    }
-
-    /**
-     * Check if the image destination directory is writable.
-     * Throw an exception if it was not writable
-     * @throws \RuntimeException
-     * @param $path
-     */
-    protected function check_image_destination_path_is_writable($path)
-    {
-        if (!$this->checked_blog_image_dir_is_writable) {
-            if (!is_writable($path)) {
-                throw new \RuntimeException("Image destination path is not writable ($path)");
-            }
-            $this->checked_blog_image_dir_is_writable = true;
-        }
     }
 
     /**

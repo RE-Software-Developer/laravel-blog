@@ -30,7 +30,7 @@ class UploadedImage
      * UploadedImage constructor.
      *
      * @param $image_filename - the new filename
-     * @param BinshopsPost $binshopsBlogPost
+     * @param BinshopsPostTranslation|null $binshopsBlogPost
      * @param $image
      * @param $source string|null  the __METHOD__  firing this event (or other string)
      */
