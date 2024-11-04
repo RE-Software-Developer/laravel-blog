@@ -115,7 +115,7 @@ class BinshopsAdminController extends Controller
             $new_blog_post = new BinshopsPost();
             $translation = new BinshopsPostTranslation();
 
-            $new_blog_post->posted_at = Carbon::now();
+            $new_blog_post->posted_at = $request->posted_at ?? Carbon::now();
         }else{
             //edits post
             $new_blog_post = BinshopsPost::findOrFail($request['post_id']);
