@@ -16,7 +16,7 @@ class BinshopsPost extends Model
      */
     public $casts = [
         'is_published' => 'boolean',
-        'posted_at' => 'date'
+        'posted_at' => 'datetime'
     ];
 
     /**

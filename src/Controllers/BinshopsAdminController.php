@@ -317,13 +317,14 @@ class BinshopsAdminController extends Controller
 
         if (!$translation){
             $translation = new BinshopsPostTranslation();
-            $new_blog_post->posted_at = Carbon::now();
+            $new_blog_post->posted_at = $request->posted_at ?? Carbon::now();
         }
 
         $post_exists = $this->check_if_same_post_exists($request['slug'] , $request['lang_id'], $blogPostId);
         if ($post_exists){
             Helpers::flash_message("Post already exists - try to change the slug for this language");
         }else {
+            $new_blog_post->posted_at = $request->posted_at;
             $new_blog_post->is_published = $request['is_published'];
             $new_blog_post->user_id = \Auth::user()->id;
             $new_blog_post->save();
