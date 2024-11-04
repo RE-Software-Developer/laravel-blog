@@ -48,6 +48,7 @@ abstract class BaseBinshopsBlogPostRequest extends BaseRequest
             'subtitle' => ['nullable', 'string', 'min:1', 'max:255'],
             'post_body' => ['required_without:use_view_file', 'max:2000000'], //medium text
             'meta_desc' => ['nullable', 'string', 'min:1', 'max:1000'],
+            'meta_keywords' => ['nullable', 'string', 'min:1', 'max:255'],
             'short_description' => ['nullable', 'string', 'max:30000'],
             'slug' => [
                 'nullable', 'string', 'min:1', 'max:150', 'alpha_dash', // this field should have some additional rules, which is done in the subclasses.
