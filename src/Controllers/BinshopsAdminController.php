@@ -355,28 +355,34 @@ class BinshopsAdminController extends Controller
         return redirect( route('binshopsblog.admin.index') );
     }
 
-    public function remove_photo($postSlug, $lang_id)
+    public function remove_photo($postSlug, $lang_id, $photo_name = null)
     {
         $post = BinshopsPostTranslation::where([
             ["slug", '=', $postSlug],
             ['lang_id', '=', $lang_id]
         ])->firstOrFail();
 
-        if (Storage::disk(config('binshopsblog.blog_filesystem_disk'))->exists($post->image_large)) {
-            Storage::disk(config('binshopsblog.blog_filesystem_disk'))->delete($post->image_large);
+        if (is_null($photo_name) || $photo_name == 'image_large') {
+            if (Storage::disk(config('binshopsblog.blog_filesystem_disk'))->exists($post->image_large)) {
+                Storage::disk(config('binshopsblog.blog_filesystem_disk'))->delete($post->image_large);
+            }
+            $post->image_large = null;
         }
 
-        if (Storage::disk(config('binshopsblog.blog_filesystem_disk'))->exists($post->image_medium)) {
-            Storage::disk(config('binshopsblog.blog_filesystem_disk'))->delete($post->image_medium);
+        if (is_null($photo_name) || $photo_name == 'image_medium') {
+            if (Storage::disk(config('binshopsblog.blog_filesystem_disk'))->exists($post->image_medium)) {
+                Storage::disk(config('binshopsblog.blog_filesystem_disk'))->delete($post->image_medium);
+            }
+            $post->image_medium = null;
         }
 
-        if (Storage::disk(config('binshopsblog.blog_filesystem_disk'))->exists($post->image_thumbnail)) {
-            Storage::disk(config('binshopsblog.blog_filesystem_disk'))->delete($post->image_thumbnail);
+        if (is_null($photo_name) || $photo_name == 'image_thumbnail') {
+            if (Storage::disk(config('binshopsblog.blog_filesystem_disk'))->exists($post->image_thumbnail)) {
+                Storage::disk(config('binshopsblog.blog_filesystem_disk'))->delete($post->image_thumbnail);
+            }
+            $post->image_thumbnail = null;
         }
 
-        $post->image_large = null;
-        $post->image_medium = null;
-        $post->image_thumbnail = null;
         $post->save();
 
         Helpers::flash_message("Photo removed");

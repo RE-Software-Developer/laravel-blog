@@ -89,7 +89,7 @@ Route::group(['middleware' => ['web'], 'namespace' => '\BinshopsBlog\Controllers
             ->name('binshopsblog.admin.update_post');
 
         //Removes post's photo
-        Route::get('/remove_photo/{slug}/{lang_id}',
+        Route::get('/remove_photo/{slug}/{lang_id}/{photo_name?}',
             'BinshopsAdminController@remove_photo')
             ->name('binshopsblog.admin.remove_photo');
 
