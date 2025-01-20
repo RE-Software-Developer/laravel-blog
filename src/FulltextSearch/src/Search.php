@@ -45,8 +45,10 @@ class Search implements SearchInterface
         if ($search) {
             $terms = TermBuilder::terms($search);
 
-            $termsBool = '+'.$terms->implode(' +');
-            $termsMatch = ''.$terms->implode(' ');
+            if ($terms->count()) {
+                $termsBool = '+' . $terms->implode(' +');
+                $termsMatch = '' . $terms->implode(' ');
+            }
         }
 
         $titleWeight = str_replace(',', '.', (float) config('binshopsblog.search.weight.title', 1.5));
