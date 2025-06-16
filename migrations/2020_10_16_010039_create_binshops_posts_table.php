@@ -13,7 +13,7 @@ class CreateBinshopsPostsTable extends Migration
      */
     public function up()
     {
-        Schema::create('binshops_posts', function (Blueprint $table) {
+        Schema::connection(config('binshopsblog.db_connection'))->create('binshops_posts', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger("user_id")->index()->nullable();
 
@@ -23,7 +23,7 @@ class CreateBinshopsPostsTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('binshops_post_categories', function (Blueprint $table) {
+        Schema::connection(config('binshopsblog.db_connection'))->create('binshops_post_categories', function (Blueprint $table) {
             $table->increments('id');
 
             $table->unsignedInteger("post_id")->index();
@@ -41,6 +41,6 @@ class CreateBinshopsPostsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('binshops_posts');
+        Schema::connection(config('binshopsblog.db_connection'))->dropIfExists('binshops_posts');
     }
 }

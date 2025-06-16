@@ -11,6 +11,7 @@ use BinshopsBlog\Laravel\Fulltext\Commands\UnindexOne;
 use BinshopsBlog\Laravel\Fulltext\ModelObserver;
 use BinshopsBlog\Laravel\Fulltext\Search;
 use BinshopsBlog\Laravel\Fulltext\SearchInterface;
+use Illuminate\Routing\Router;
 
 class BinshopsBlogServiceProvider extends ServiceProvider
 {
@@ -25,7 +26,7 @@ class BinshopsBlogServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(Router $router)
     {
 
         if (config("binshopsblog.search.search_enabled") == false) {
@@ -64,7 +65,7 @@ class BinshopsBlogServiceProvider extends ServiceProvider
             __DIR__ . '/js/binshops-blog.js' => public_path('binshops-blog.js'),
         ]);
 
-
+        $router->aliasMiddleware('db-connection', DbConnection::class);
     }
 
     /**

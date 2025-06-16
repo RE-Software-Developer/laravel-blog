@@ -13,7 +13,7 @@ class CreateBinshopsCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('binshops_categories', function (Blueprint $table) {
+        Schema::connection(config('binshopsblog.db_connection'))->create('binshops_categories', function (Blueprint $table) {
             $table->increments('id');
 
             $table->unsignedInteger("created_by")->nullable()->index()->comment("user id");
@@ -36,6 +36,6 @@ class CreateBinshopsCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('binshops_categories');
+        Schema::connection(config('binshopsblog.db_connection'))->dropIfExists('binshops_categories');
     }
 }

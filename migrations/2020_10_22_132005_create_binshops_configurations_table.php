@@ -13,7 +13,7 @@ class CreateBinshopsConfigurationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('binshops_configurations', function (Blueprint $table) {
+        Schema::connection(config('binshopsblog.db_connection'))->create('binshops_configurations', function (Blueprint $table) {
             $table->string("key")->primary();
             $table->string("value");
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreateBinshopsConfigurationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('binshops_configurations');
+        Schema::connection(config('binshopsblog.db_connection'))->dropIfExists('binshops_configurations');
     }
 }

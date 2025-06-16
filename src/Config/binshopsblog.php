@@ -7,6 +7,9 @@ return [
     //Change it to \App\User::class for previous laravel versions
     'user_model'=>\App\Models\User::class,
 
+    //Change this if you want to run all migrations, write, and read operations on a separate database
+    'db_connection' => 'default',
+
     // reading progress bar is the bar which shows on top of your post when you are scrolling down the page. You can disable this feature if you want
     'reading_progress_bar' => true,
 

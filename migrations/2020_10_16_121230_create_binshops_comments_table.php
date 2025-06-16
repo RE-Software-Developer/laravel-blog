@@ -13,7 +13,7 @@ class CreateBinshopsCommentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('binshops_comments', function (Blueprint $table) {
+        Schema::connection(config('binshopsblog.db_connection'))->create('binshops_comments', function (Blueprint $table) {
             $table->increments('id');
 
             $table->unsignedInteger("post_id")->index();
@@ -40,6 +40,6 @@ class CreateBinshopsCommentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('binshops_comments');
+        Schema::connection(config('binshopsblog.db_connection'))->dropIfExists('binshops_comments');
     }
 }

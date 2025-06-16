@@ -13,7 +13,7 @@ class AddDisplayFullscreenToBinshopsPostTranslationsTable extends Migration
      */
     public function up()
     {
-        Schema::table('binshops_post_translations', function (Blueprint $table) {
+        Schema::connection(config('binshopsblog.db_connection'))->table('binshops_post_translations', function (Blueprint $table) {
             $table->boolean("display_fullscreen")->default(false);
         });
     }
@@ -25,7 +25,7 @@ class AddDisplayFullscreenToBinshopsPostTranslationsTable extends Migration
      */
     public function down()
     {
-        Schema::table('binshops_post_translations', function (Blueprint $table) {
+        Schema::connection(config('binshopsblog.db_connection'))->table('binshops_post_translations', function (Blueprint $table) {
             $table->dropColumn("display_fullscreen");
         });
     }
