@@ -8,7 +8,7 @@ return [
     'user_model'=>\App\Models\User::class,
 
     //Change this if you want to run all migrations, write, and read operations on a separate database
-    'db_connection' => 'default',
+    'db_connection' => null, // set to null for the default database, or set to any other connection name defined in database.php
 
     // reading progress bar is the bar which shows on top of your post when you are scrolling down the page. You can disable this feature if you want
     'reading_progress_bar' => true,

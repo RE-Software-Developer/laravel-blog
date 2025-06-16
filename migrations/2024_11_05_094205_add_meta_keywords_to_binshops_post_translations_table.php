@@ -13,7 +13,7 @@ class AddMetaKeywordsToBinshopsPostTranslationsTable extends Migration
      */
     public function up()
     {
-        Schema::connection(config('binshopsblog.db_connection'))->table('binshops_post_translations', function (Blueprint $table) {
+        Schema::connection(config('binshopsblog.db_connection') ?? config('database.default'))->table('binshops_post_translations', function (Blueprint $table) {
             $table->string("meta_keywords")->nullable();
         });
     }
@@ -25,7 +25,7 @@ class AddMetaKeywordsToBinshopsPostTranslationsTable extends Migration
      */
     public function down()
     {
-        Schema::connection(config('binshopsblog.db_connection'))->table('binshops_post_translations', function (Blueprint $table) {
+        Schema::connection(config('binshopsblog.db_connection') ?? config('database.default'))->table('binshops_post_translations', function (Blueprint $table) {
             $table->dropColumn("meta_keywords");
         });
     }

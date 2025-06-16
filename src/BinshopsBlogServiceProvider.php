@@ -4,6 +4,7 @@ namespace BinshopsBlog;
 
 use BinshopsBlog\Models\BinshopsPostTranslation;
 use Illuminate\Support\ServiceProvider;
+use BinshopsBlog\Middleware\DbConnection;
 use BinshopsBlog\Models\BinshopsPost;
 use BinshopsBlog\Laravel\Fulltext\Commands\Index;
 use BinshopsBlog\Laravel\Fulltext\Commands\IndexOne;

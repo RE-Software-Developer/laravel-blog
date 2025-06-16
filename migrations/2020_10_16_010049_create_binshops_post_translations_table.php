@@ -13,7 +13,7 @@ class CreateBinshopsPostTranslationsTable extends Migration
      */
     public function up()
     {
-        Schema::connection(config('binshopsblog.db_connection'))->create('binshops_post_translations', function (Blueprint $table) {
+        Schema::connection(config('binshopsblog.db_connection') ?? config('database.default'))->create('binshops_post_translations', function (Blueprint $table) {
             $table->increments('id');
 
             $table->unsignedInteger('post_id')->nullable();
@@ -46,6 +46,6 @@ class CreateBinshopsPostTranslationsTable extends Migration
      */
     public function down()
     {
-        Schema::connection(config('binshopsblog.db_connection'))->dropIfExists('binshops_post_translations');
+        Schema::connection(config('binshopsblog.db_connection') ?? config('database.default'))->dropIfExists('binshops_post_translations');
     }
 }

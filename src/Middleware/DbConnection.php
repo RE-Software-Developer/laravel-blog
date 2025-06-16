@@ -20,7 +20,9 @@ class DbConnection
     public function handle(Request $request, Closure $next, string $connection)
     {
         // Override the default connection for this request
-        Config::set('database.default', $connection);
+        if ($connection !== '') {
+            Config::set('database.default', $connection);
+        }
 
         return $next($request);
     }

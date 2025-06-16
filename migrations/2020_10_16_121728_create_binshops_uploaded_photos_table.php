@@ -13,7 +13,7 @@ class CreateBinshopsUploadedPhotosTable extends Migration
      */
     public function up()
     {
-        Schema::connection(config('binshopsblog.db_connection'))->create('binshops_uploaded_photos', function (Blueprint $table) {
+        Schema::connection(config('binshopsblog.db_connection') ?? config('database.default'))->create('binshops_uploaded_photos', function (Blueprint $table) {
             $table->increments('id');
             $table->text("uploaded_images")->nullable();
             $table->string("image_title")->nullable();
@@ -30,6 +30,6 @@ class CreateBinshopsUploadedPhotosTable extends Migration
      */
     public function down()
     {
-        Schema::connection(config('binshopsblog.db_connection'))->dropIfExists('binshops_uploaded_photos');
+        Schema::connection(config('binshopsblog.db_connection') ?? config('database.default'))->dropIfExists('binshops_uploaded_photos');
     }
 }

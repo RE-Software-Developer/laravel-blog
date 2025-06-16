@@ -13,7 +13,7 @@ class CreateBinshopsCategoryTranslationsTable extends Migration
      */
     public function up()
     {
-        Schema::connection(config('binshopsblog.db_connection'))->create('binshops_category_translations', function (Blueprint $table) {
+        Schema::connection(config('binshopsblog.db_connection') ?? config('database.default'))->create('binshops_category_translations', function (Blueprint $table) {
             $table->increments('id');
 
             $table->unsignedInteger('category_id')->nullable();
@@ -36,6 +36,6 @@ class CreateBinshopsCategoryTranslationsTable extends Migration
      */
     public function down()
     {
-        Schema::connection(config('binshopsblog.db_connection'))->dropIfExists('binshops_category_translations');
+        Schema::connection(config('binshopsblog.db_connection') ?? config('database.default'))->dropIfExists('binshops_category_translations');
     }
 }

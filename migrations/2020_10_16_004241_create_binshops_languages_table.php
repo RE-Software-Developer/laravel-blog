@@ -13,7 +13,7 @@ class CreateBinshopsLanguagesTable extends Migration
      */
     public function up()
     {
-        Schema::connection(config('binshopsblog.db_connection'))->create('binshops_languages', function (Blueprint $table) {
+        Schema::connection(config('binshopsblog.db_connection') ?? config('database.default'))->create('binshops_languages', function (Blueprint $table) {
             $table->increments('id');
 
             $table->string("name")->unique();
@@ -34,6 +34,6 @@ class CreateBinshopsLanguagesTable extends Migration
      */
     public function down()
     {
-        Schema::connection(config('binshopsblog.db_connection'))->dropIfExists('binshops_languages');
+        Schema::connection(config('binshopsblog.db_connection') ?? config('database.default'))->dropIfExists('binshops_languages');
     }
 }
