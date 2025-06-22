@@ -16,4 +16,14 @@ class BinshopsUploadedPhoto extends Model
         'uploader_id',
         'source', 'uploaded_images',
     ];
+
+    /**
+     * Use a specified database connection, if one is configured
+     *
+     * @return string
+     */
+    public function getConnectionName()
+    {
+        return config('binshopsblog.db_connection', 'mysql');
+    }
 }

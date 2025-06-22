@@ -15,6 +15,15 @@ class BinshopsLanguage extends Model
         'active'
     ];
 
+    /**
+     * Use a specified database connection, if one is configured
+     *
+     * @return string
+     */
+    public function getConnectionName()
+    {
+        return config('binshopsblog.db_connection', 'mysql');
+    }
 
     /**
      * The associated post (if post_id) is set

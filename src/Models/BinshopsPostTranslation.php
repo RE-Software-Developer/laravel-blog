@@ -30,6 +30,15 @@ class BinshopsPostTranslation extends Model implements SearchResultInterface
     ];
 
     /**
+     * Use a specified database connection, if one is configured
+     *
+     * @return string
+     */
+    public function getConnectionName()
+    {
+        return config('binshopsblog.db_connection', 'mysql');
+    }
+    /**
      * Get the user that owns the phone.
      */
     public function post()

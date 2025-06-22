@@ -65,8 +65,6 @@ class BinshopsBlogServiceProvider extends ServiceProvider
             __DIR__ . '/css/admin-setup.css' => public_path('admin-setup.css'),
             __DIR__ . '/js/binshops-blog.js' => public_path('binshops-blog.js'),
         ]);
-
-        $router->aliasMiddleware('db-connection', DbConnection::class);
     }
 
     /**

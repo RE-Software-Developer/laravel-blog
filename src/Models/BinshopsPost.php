@@ -35,6 +35,16 @@ class BinshopsPost extends Model
     ];
 
     /**
+     * Use a specified database connection, if one is configured
+     *
+     * @return string
+     */
+    public function getConnectionName()
+    {
+        return config('binshopsblog.db_connection', 'mysql');
+    }
+
+    /**
      * The associated post translations
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */

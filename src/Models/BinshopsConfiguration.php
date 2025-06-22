@@ -18,6 +18,16 @@ class BinshopsConfiguration extends Model
         'value'
     ];
 
+    /**
+     * Use a specified database connection, if one is configured
+     *
+     * @return string
+     */
+    public function getConnectionName()
+    {
+        return config('binshopsblog.db_connection', 'mysql');
+    }
+
     public static function get($key){
         $obj = BinshopsConfiguration::where('key', $key)->first();
         if ($obj){

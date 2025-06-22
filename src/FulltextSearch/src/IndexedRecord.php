@@ -15,6 +15,16 @@ class IndexedRecord extends Model
         parent::__construct($attributes);
     }
 
+    /**
+     * Use a specified database connection, if one is configured
+     *
+     * @return string
+     */
+    public function getConnectionName()
+    {
+        return config('binshopsblog.db_connection', 'mysql');
+    }
+
     public function indexable()
     {
         return $this->morphTo();
