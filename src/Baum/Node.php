@@ -987,6 +987,24 @@ abstract class Node extends Model {
   }
 
   /**
+   * Reorders all of the children in the order of the $orderedChildrenIds
+   *
+   * @param string[] $orderedChildrenIds
+   * @return void
+   */
+  public function reorderChildren(array $orderedChildrenIds) {
+      foreach (array_reverse($orderedChildrenIds) as $childId) {
+          $parent = self::find($this->id);
+          $child = self::find($childId);
+          try {
+              $child->makeFirstChildOf($parent);
+          } catch (MoveNotPossibleException $e) {
+              //Do Nothing
+          }
+      }
+  }
+
+  /**
    * Equals?
    *
    * @param \BinshopsBlog\Baum\Node

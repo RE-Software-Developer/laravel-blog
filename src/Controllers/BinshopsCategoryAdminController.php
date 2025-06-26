@@ -175,8 +175,22 @@ class BinshopsCategoryAdminController extends Controller
         
         $category->save();
         $translation->save();
-
         Helpers::flash_message("Saved category changes");
+
+        if ($request->has('children')) {
+            $childrenIds = array_filter(explode(',', $request->children), function($c) { return $c !== ''; });
+            $categoryChildrenIds = $category->children()->pluck('id')->toArray();
+
+            if ($childrenIds) {
+                //if the children id set is outdated, don't reorder and show an error message
+                if (array_diff($childrenIds, $categoryChildrenIds) || array_diff($categoryChildrenIds, $childrenIds)) {
+                    Helpers::flash_message("Saved category changes, but children data was outdated. If you tried to reorder children, please refresh the page and try again.");
+                } else {
+                    $category->reorderChildren($childrenIds);
+                }
+            }
+        }
+
         event(new CategoryEdited($category));
         return redirect($translation->edit_url());
     }
