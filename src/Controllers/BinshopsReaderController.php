@@ -152,6 +152,9 @@ class BinshopsReaderController extends Controller
             ["slug", "=", $blogPostSlug],
             ['lang_id', "=" , $request->get("lang_id")]
         ])->firstOrFail();
+        if (empty($blog_post) || empty($blog_post->post)) {
+            abort(404);
+        }
 
         if ($captcha = $this->getCaptchaObject()) {
             $captcha->runCaptchaBeforeShowingPosts($request, $blog_post);
