@@ -192,4 +192,6 @@ return [
      * extending the Storage will also be available.
      */
     'filesystem_driver'      => env('FILESYSTEM_DRIVER', 'local'),
+
+    'public_middleware' => [], //middleware applied to all public routes
 ];

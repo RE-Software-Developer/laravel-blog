@@ -3,7 +3,10 @@
 Route::group(['middleware' => ['web'], 'namespace' => '\BinshopsBlog\Controllers'], function () {
 
     /** The main public facing blog routes - show all posts, view a category, view a single post, also the add comment route */
-    Route::group(['prefix' => "/{locale}/".config('binshopsblog.blog_prefix', 'blog')], function () {
+    Route::group([
+        'prefix' => "/{locale}/".config('binshopsblog.blog_prefix', 'blog'),
+        'middleware' => config('binshopsblog.public_middleware', []),
+    ], function () {
 
         Route::get('/', 'BinshopsReaderController@index')
             ->name('binshopsblog.index');
@@ -25,7 +28,10 @@ Route::group(['middleware' => ['web'], 'namespace' => '\BinshopsBlog\Controllers
         });
     });
 
-    Route::group(['prefix' => config('binshopsblog.blog_prefix', 'blog')], function () {
+    Route::group([
+        'prefix' => config('binshopsblog.blog_prefix', 'blog'),
+        'middleware' => config('binshopsblog.public_middleware', []),
+    ], function () {
 
         Route::get('/', 'BinshopsReaderController@index')
             ->name('binshopsblognolocale.index');
