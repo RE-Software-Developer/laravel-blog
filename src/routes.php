@@ -149,6 +149,10 @@ Route::group(['middleware' => ['web'], 'namespace' => '\BinshopsBlog\Controllers
             Route::delete('/delete_category/{categoryId}',
                 'BinshopsCategoryAdminController@destroy_category')
                 ->name('binshopsblog.admin.categories.destroy_category');
+
+            Route::patch('/reorder_root_categories',
+                'BinshopsCategoryAdminController@reorder_root_categories')
+                ->name('binshopsblog.admin.categories.reorder_root_categories');
         });
 
         Route::group(['prefix' => 'languages'], function () {

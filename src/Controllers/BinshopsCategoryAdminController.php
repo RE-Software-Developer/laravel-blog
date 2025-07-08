@@ -3,6 +3,7 @@
 namespace BinshopsBlog\Controllers;
 
 use App\Http\Controllers\Controller;
+use BinshopsBlog\Baum\MoveNotPossibleException;
 use Illuminate\Http\Request;
 use BinshopsBlog\Events\CategoryAdded;
 use BinshopsBlog\Events\CategoryEdited;
@@ -218,6 +219,44 @@ class BinshopsCategoryAdminController extends Controller
         $category->delete();
 
         Helpers::flash_message("Category successfully deleted!");
+        return redirect( route('binshopsblog.admin.categories.index') );
+    }
+
+    /**
+     * Reorder root categories
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function reorder_root_categories(Request $request)
+    {
+        if ($request->has('children')) {
+            $categoryIds = array_filter(explode(',', $request->children), function($c) { return $c !== ''; });
+            $existingCategoryIds = BinshopsCategory::where('depth', 0)->pluck('id')->toArray();
+
+            if ($categoryIds) {
+                //if the children id set is outdated, don't reorder and show an error message
+                if (array_diff($categoryIds, $existingCategoryIds) || array_diff($existingCategoryIds, $categoryIds)) {
+                    Helpers::flash_message("Children data is outdated. Please refresh the page and try again.");
+                } else {
+                    //Reorder children (Loop through children, and move each one to the right of the previous one)
+                    foreach ($categoryIds as $childId) {
+                        $child = BinshopsCategory::find($childId);
+                        try {
+                            if (isset($leftSibling) && $leftSibling) {
+                                $child->moveToRightOf($leftSibling);
+                            }
+                            $leftSibling = $child;
+                            event(new CategoryEdited($child));
+                        } catch (MoveNotPossibleException $e) {
+                            //Do Nothing
+                        }
+                    }
+                }
+            }
+        }
+
+        Helpers::flash_message("Successfully Reordered Root Categories");
         return redirect( route('binshopsblog.admin.categories.index') );
     }
 
