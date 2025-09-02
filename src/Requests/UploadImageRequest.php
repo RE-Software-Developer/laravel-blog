@@ -29,7 +29,8 @@ class UploadImageRequest extends BaseRequest
             ],
             'upload' => [
                 'required',
-                'image',
+                'file',
+                'mimes:jpeg,jpg,png,pdf',
             ],
             'image_title' => [
                 'required',

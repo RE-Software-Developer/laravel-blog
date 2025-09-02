@@ -38,6 +38,38 @@ trait UploadFileTrait
      * Get a filename (that doesn't exist) on the filesystem.
      *
      * @param string $suggested_title
+     * @param UploadedFile $media
+     * @return string
+     * @throws \RuntimeException
+     */
+    protected function getPDFFilename(string $suggested_title, UploadedFile $media)
+    {
+        $base = $this->generate_base_filename($suggested_title);
+        $ext = '.' . $media->getClientOriginalExtension();
+
+        for ($i = 1; $i <= self::$num_of_attempts_to_find_filename; $i++) {
+
+            // add suffix if $i>1
+            $suffix = $i > 1 ? '-' . str_random(5) : '';
+
+            $attempt = str_slug($base . $suffix) . $ext;
+
+            if (!Storage::disk(config('binshopsblog.blog_filesystem_disk'))->exists($attempt)) {
+                // filename doesn't exist, let's use it!
+                return $attempt;
+            }
+
+        }
+
+        // too many attempts...
+        throw new \RuntimeException("Unable to find a free filename after $i attempts - aborting now.");
+
+    }
+
+    /**
+     * Get a filename (that doesn't exist) on the filesystem.
+     *
+     * @param string $suggested_title
      * @param $image_size_details - either an array (with w/h attributes) or a string
      * @param UploadedFile $photo
      * @return string
@@ -70,6 +102,26 @@ trait UploadFileTrait
 
     }
 
+    /**
+     * @param $suggestedTitle  - used to help generate the filename
+     * @param $media
+     * @return array
+     * @throws Exception
+     */
+    protected function UploadPDF($suggestedTitle, $media): array
+    {
+        $filename = $this->getPDFFilename($suggestedTitle, $media);
+        $pdf = file_get_contents($media->getRealPath());
+
+        $path = Storage::disk(config('binshopsblog.blog_filesystem_disk'))
+            ->put($filename, $pdf);
+
+        event(new UploadedImage($filename, $path, null, __METHOD__));
+
+        return [
+            'filename' => $filename,
+        ];
+    }
 
     /**
      * @param BinshopsPostTranslation|null  $new_blog_post
