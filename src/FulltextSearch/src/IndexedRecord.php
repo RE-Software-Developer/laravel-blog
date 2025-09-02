@@ -10,7 +10,7 @@ class IndexedRecord extends Model
 
     public function __construct(array $attributes = [])
     {
-        $this->connection = config('binshopsblog.search.db_connection');
+        $this->connection = config('binshopsblog.db_connection', 'mysql');
 
         parent::__construct($attributes);
     }

@@ -39,14 +39,14 @@ class Search implements SearchInterface
      */
     public function searchQuery($search)
     {
-        $termsBool = '';
+        $searchFilter = '';
         $termsMatch = '';
 
         if ($search) {
+            $searchFilter = $search;
             $terms = TermBuilder::terms($search);
 
             if ($terms->count()) {
-                $termsBool = '+' . $terms->implode(' +');
                 $termsMatch = '' . $terms->implode(' ');
             }
         }
@@ -55,7 +55,7 @@ class Search implements SearchInterface
         $contentWeight = str_replace(',', '.', (float) config('binshopsblog.search.weight.content', 1.0));
 
         $query = IndexedRecord::query()
-          ->whereRaw('MATCH (indexed_title, indexed_content) AGAINST (? IN BOOLEAN MODE)', [$termsBool])
+          ->whereRaw('MATCH (indexed_title, indexed_content) AGAINST (? IN NATURAL LANGUAGE MODE)', [$searchFilter])
           ->orderByRaw(
               '('.$titleWeight.' * (MATCH (indexed_title) AGAINST (?)) +
               '.$contentWeight.' * (MATCH (indexed_title, indexed_content) AGAINST (?))
