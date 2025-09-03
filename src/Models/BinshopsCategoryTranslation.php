@@ -65,4 +65,13 @@ class BinshopsCategoryTranslation extends Model
     {
         return route("binshopsblog.admin.categories.edit_category", $this->category_id);
     }
+
+    /**
+     * Returns the URL for an admin user to view all posts of this category
+     * @return string
+     */
+    public function category_posts_url()
+    {
+        return route("binshopsblog.admin.categories.category_posts", $this->category_id);
+    }
 }

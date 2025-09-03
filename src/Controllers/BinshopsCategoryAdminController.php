@@ -4,6 +4,7 @@ namespace BinshopsBlog\Controllers;
 
 use App\Http\Controllers\Controller;
 use BinshopsBlog\Baum\MoveNotPossibleException;
+use BinshopsBlog\Models\BinshopsPostTranslation;
 use Illuminate\Http\Request;
 use BinshopsBlog\Events\CategoryAdded;
 use BinshopsBlog\Events\CategoryEdited;
@@ -45,6 +46,66 @@ class BinshopsCategoryAdminController extends Controller
         return view("binshopsblog_admin::categories.index",[
             'categories' => $categories,
             'language_id' => $language_id
+        ]);
+    }
+
+    /**
+     * Show the search results for $_GET['s']
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Exception
+     */
+    public function searchCategories(Request $request)
+    {
+        $search = $request->get("s");
+        $language_id = $request->get('language_id');
+        $categories = BinshopsCategoryTranslation::orderBy("category_id")
+            ->where('lang_id', $language_id)
+            ->where(function($query) use ($search) {
+                $query
+                    ->where('category_name', 'LIKE', "%$search%")
+                    ->orWhere('category_description', 'LIKE', "%$search%")
+                    ->orWhere('slug', 'LIKE', "%$search%");
+            })
+            ->paginate(25);
+
+        return view("binshopsblog_admin::categories.index",[
+            'categories' => $categories,
+            'language_id' => $language_id
+        ]);
+    }
+
+    /**
+     * Show all posts of the category
+     * @param $categoryId
+     * @return mixed
+     */
+    public function category_posts($categoryId, Request $request){
+        $language_id = $request->get('language_id');
+
+        $category = BinshopsCategory::findOrFail($categoryId);
+        $cat_trans = BinshopsCategoryTranslation::where(
+            [
+                ['lang_id', '=', $language_id],
+                ['category_id', '=', $categoryId]
+            ]
+        )->first();
+
+        $postIds = $category->posts()
+            ->where("binshops_post_categories.category_id", $category->id)
+            ->pluck('binshops_posts.id');
+
+        $posts = BinshopsPostTranslation::join('binshops_posts', 'binshops_post_translations.post_id', '=', 'binshops_posts.id')
+            ->where('lang_id', $language_id)
+            ->whereIn('binshops_posts.id', $postIds)
+            ->paginate(10);
+
+        return view("binshopsblog_admin::categories.category_posts",[
+            'category' => $category,
+            'category_translation' => $cat_trans,
+            'post_translations' => $posts,
+            'language_id' => $language_id,
         ]);
     }
 
