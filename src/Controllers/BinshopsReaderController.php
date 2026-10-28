@@ -2,7 +2,7 @@
 
 namespace BinshopsBlog\Controllers;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Carbon\Carbon;
 use BinshopsBlog\Laravel\Fulltext\Search;
 use BinshopsBlog\Models\BinshopsCategoryTranslation;

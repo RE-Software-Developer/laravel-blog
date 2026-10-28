@@ -3,7 +3,7 @@
 
 namespace BinshopsBlog\Controllers;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use BinshopsBlog\Models\BinshopsConfiguration;
 use Illuminate\Http\Request;
 use BinshopsBlog\Helpers;

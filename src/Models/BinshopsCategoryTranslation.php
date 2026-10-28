@@ -54,7 +54,7 @@ class BinshopsCategoryTranslation extends Model
             $theChainString .=  "/" . $category->categoryTranslations()->where('lang_id' , $this->lang_id)->first()->slug;
         }
 
-        return $routeWithoutLocale ? route("binshopsblog.view_category",["", $theChainString]) : route("binshopsblog.view_category",[$locale, $theChainString]);
+        return $routeWithoutLocale ? route("binshopsblognolocale.view_category",[$theChainString]) : route("binshopsblog.view_category",[$locale, $theChainString]);
     }
 
     /**

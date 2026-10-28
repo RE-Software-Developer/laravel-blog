@@ -2,7 +2,7 @@
 
 namespace BinshopsBlog\Controllers;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Auth;
 use BinshopsBlog\Captcha\CaptchaAbstract;
 use BinshopsBlog\Captcha\UsesCaptcha;
